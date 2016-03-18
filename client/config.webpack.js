@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
       output: {
           path: path.join(process.cwd(), 'dist'),
           filename: 'bundle.js',
-          publicPath: '/static/'
+          publicPath: '/'
       },
       plugins: [
           new webpack.optimize.OccurenceOrderPlugin(),
@@ -31,14 +31,10 @@ if (process.env.NODE_ENV === 'production') {
                   loaders: ['babel'],
                   include: path.join(process.cwd(), 'src')
               }, {
-                  test: /\.js$/,
-                  loaders: ['babel'],
-                  include: path.join(process.cwd(), 'src')
-              }, {
                   test: /\.css$/,
                   loaders: ['style', 'css?sourceMap']
               }, {
-                  test: /\.(png|jpg|woff|woff2|eot|ttf|svg)$/,
+                  test: /\.(png|jpg|woff|woff2|eot|ttf|otf|svg)$/,
                   loader: 'url-loader?limit=100000'
               }
           ]
@@ -54,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
       output: {
           path: path.join(process.cwd(), 'dist'),
           filename: 'bundle.js',
-          publicPath: '/static/'
+          publicPath: '/dist/'
       },
       plugins: [
           new webpack.HotModuleReplacementPlugin(),

@@ -14,7 +14,7 @@ body {
 @font-face {
 
     font-family: bonveno-light;
-    src: url('fonts/BonvenoCF-Light.otf') format('opentype');
+    src: url('./fonts/BonvenoCF-Light.otf') format('opentype');
 }
 
 nav {
@@ -34,11 +34,11 @@ nav {
     font-size: 1.8em;
     letter-spacing: -1px;
     color: #FFF;
-    
+
     margin: 0 60px 0 0;
-    
+
     -webkit-font-smoothing: antialiased;
-    
+
     cursor: pointer;
 }
 
@@ -74,7 +74,7 @@ nav {
 }
 
 .card-horizontal-2 {
-    
+
 }
 
 .card-horizontal-3 {
@@ -131,7 +131,7 @@ nav {
     font-family: sans-serif;
     font-size: 1.2em;
     color: white;
-    
+
     -webkit-font-smoothing: antialiased;
 }
 

@@ -1,11 +1,19 @@
 {
-  "name": "project-vortex-client",
+  "name": "nhl-server",
   "version": "1.0.0",
-  "description": ",-----.,--.                  ,--. ,---.   ,--.,------.  ,------.     '  .--./|  | ,---. ,--.,--. ,-|  || o   \\  |  ||  .-.  \\ |  .---'     |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \\  :|  `--,      '  '--'\\|  |' '-' ''  ''  '\\ `-' | .'  /   |  ||  '--'  /|  `---.      `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'     -----------------------------------------------------------------",
-  "main": "index.js",
+  "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "PORT=3000 IP=0.0.0.0 nodemon app.js",
+    "build": "cd client && NODE_ENV=production npm run build && cd .. && cp client/dist/bundle.js public/"
   },
-  "author": "",
-  "license": "MIT"
+  "dependencies": {
+    "axios": "^0.9.1",
+    "bluebird": "^3.3.3",
+    "express": "^4.13.4",
+    "express-graphql": "^0.4.9",
+    "express-session": "^1.13.0",
+    "graphql": "^0.4.18",
+    "lodash": "^4.5.1",
+    "nodemon": "^1.9.1"
+  }
 }

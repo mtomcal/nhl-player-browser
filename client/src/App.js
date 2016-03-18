@@ -7,7 +7,6 @@ export default React.createClass({
         return (
         <div>
             <div className="sidebar">
-            
             </div>
         {/*<NavBar arg1={"foo"}>Bar</NavBar>
             <div className="deck">

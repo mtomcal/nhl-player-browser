@@ -8,11 +8,11 @@ export default React.createClass({
     },
     getInitialState() {
         return {
-            coolColor: "white"
+            coolColor: 'white'
         };
     },
     onClickHandler(e) {
-        this.setState({coolColor: "red"});
+        this.setState({coolColor: 'red'});
     },
     renderPlayerList() {
         if (this.props.playerList) {

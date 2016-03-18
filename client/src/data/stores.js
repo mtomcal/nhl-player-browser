@@ -1,29 +1,24 @@
 import Rx from 'rxjs';
 import jQuery from 'jquery';
 
-Rx.config.longStackSupport = true;
-
 let _state = {
     players: {},
     playerList: []
 };
 
-const Dispatcher = new Rx.ReplaySubject(1);
-
+const Dispatcher = new Rx.Subject();
 
 export const PlayerActions = {
     get(id) {
-        Dispatcher.onNext({type: 'GET_PLAYER', id});
+        Dispatcher.next({type: 'GET_PLAYER', id});
     }
 }
 
 export const PlayerListActions = {
     get() {
-        Dispatcher.onNext({type: 'GET_PLAYERLIST'});
+        Dispatcher.next({type: 'GET_PLAYERLIST'});
     }
 }
-
-window.PlayerListActions = PlayerListActions;
 
 const PlayerStream = Dispatcher
     .filter((action) => action.type === 'GET_PLAYER')
@@ -57,7 +52,8 @@ export const stateStream = Rx.Observable.merge(PlayerStream, PlayerListStream)
         _state = Object.assign({}, _state, fragment);
         return _state;
     })
-    .shareReplay(1);
+    .publishReplay(1)
 
-stateStream
-    .subscribe((res) => console.log(res))
+stateStream.connect();
+
+stateStream.subscribe((res) => console.log(res))

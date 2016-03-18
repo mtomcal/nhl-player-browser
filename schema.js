@@ -119,9 +119,9 @@ module.exports = new GraphQLSchema({
                     return axios.get('http://www.nhl.com/stats/rest/grouped/skaters/season/goals?cayenneExp=seasonId=20152016%20and%20gameTypeId=2%20and%20playerIsActive=1')
                         .then(function(data) {
                             var res = _.get(data, "data.data");
-                            
+
                             var keys = _.keysIn(args);
-                            
+
                             return res.filter((player) => {
                                 var matches = keys.map(function (key) {
                                     return args[key] === player[key];
