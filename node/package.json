@@ -13,7 +13,7 @@
     "express-session": "^1.13.0",
     "graphql": "^0.4.18",
     "lodash": "^4.5.1",
-    "nhl-client": "file:///Users/mtomcal/Projects/nhl-player-browser/client",
+    "nhl-client": "../client",
     "nodemon": "^1.9.1"
   }
 }
