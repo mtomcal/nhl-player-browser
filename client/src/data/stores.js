@@ -2,17 +2,10 @@ import Rx from 'rxjs';
 import axios from 'axios'
 
 let _state = {
-    players: {},
     playerList: []
 };
 
 const Dispatcher = new Rx.Subject();
-
-export const PlayerActions = {
-    get(id) {
-        Dispatcher.next({type: 'GET_PLAYER', id});
-    }
-}
 
 export const PlayerListActions = {
     get() {
@@ -55,5 +48,3 @@ export const stateStream = Rx.Observable.merge(PlayerListStream)
 stateStream.connect();
 
 stateStream.subscribe((res) => console.log(res), (err) => console.log(err))
-
-PlayerListActions.get();

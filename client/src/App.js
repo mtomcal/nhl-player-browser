@@ -1,49 +1,38 @@
 import React from 'react';
-import NavBar from './NavBar';
-import Stores from './data/stores';
+import {stateStream, PlayerListActions} from './data/stores';
+import mapComponentToStream from './mapComponentToStream';
 
-export default React.createClass({
-    render() {
-        return (
-        <div>
-            <div className="sidebar">
-            </div>
-        {/*<NavBar arg1={"foo"}>Bar</NavBar>
-            <div className="deck">
-                <div className="column">
-                    <div className="row">
-                        <div className="card-vertical-2">
-                            <img className="profile-pic" src="https://nhl.bamcontent.com/images/headshots/current/168x168/8474141.jpg" height="168" width="168"/>
-                        </div>
-                        <div className="card-vertical-3">
-                            <p className="info">Born: 11/19/1988</p>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="card-horizontal-3"></div>
-                    </div>
-                </div>
-                <div className="column">
-                    <div className="row">
-                        <div className="card-horizontal-4"></div>
-                    </div>
-                </div>
-                <div className="column">
-                    <div className="row">
-                        <div className="card-horizontal-1"></div>
-                    </div>
-                    <div className="row">
-                        <div className="card-vertical-1"></div>
-                        <div className="card-vertical-1"></div>
-                    </div>
-                </div>
-                <div className="column">
-                    <div className="row">
-                        <div className="card-horizontal-4"></div>
-                    </div>
-                </div>
-            </div>*/}
+export const App = React.createClass({
+  renderItems() {
+    return this.props.stream.playerList
+    .map(function (player, index) {
+      var style = {
+        order: -player.goals
+      };
+      return (
+        <div key={`player-${index}`} style={style} className="item card">
+        <h1>{player.playerName}</h1>
+        <hr />
+        <p>Goals: {player.goals}</p>
         </div>
-        );
-    }
+      );
+    });
+  },
+  render() {
+    return (
+      <div className="container">
+        {this.renderItems()}
+      </div>
+    );
+  }
 });
+
+const StreamContainer = mapComponentToStream({
+  Component: App,
+  stream: stateStream
+});
+
+export default function (props) {
+  PlayerListActions.get();
+  return <StreamContainer {...props} />;
+}
