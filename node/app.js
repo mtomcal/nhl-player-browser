@@ -8,6 +8,12 @@ var app = express();
 
 app.use(session({ secret: '12345', cookie: { maxAge: 60000 }}));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use('/graphql', graphqlHTTP((request) => ({
   schema: Schema,
   rootValue: { session: request.session },

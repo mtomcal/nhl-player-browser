@@ -1,5 +1,5 @@
 import Rx from 'rxjs';
-import jQuery from 'jquery';
+import axios from 'axios'
 
 let _state = {
     players: {},
@@ -20,34 +20,32 @@ export const PlayerListActions = {
     }
 }
 
-const PlayerStream = Dispatcher
-    .filter((action) => action.type === 'GET_PLAYER')
-    .flatMap((action) => Rx.Observable.fromPromise(jQuery.getJSON(`//statsapi.web.nhl.com/api/v1/people/${action.id}?expand=person.stats&stats=yearByYear,careerRegularSeason&expand=stats.team&site=en_nhl`)))
-    .flatMap((res) => {
-        return res.people;
-    })
-    .map((res) => {
-        return {
-            players: Object.assign(_state.players, {
-                [res.id]: res
-            })
-        }
-    });
-
 const PlayerListStream = Dispatcher
     .filter((action) => action.type === 'GET_PLAYERLIST')
-    .flatMap((action) => {
-        return Rx.Observable.fromPromise(
-            jQuery.getJSON(`http://www.nhl.com/stats/rest/grouped/skaters/season/goals?cayenneExp=seasonId=20152016%20and%20gameTypeId=2%20and%20playerIsActive=1`)
-        );
+    .flatMap((action) => Rx.Observable.fromPromise(
+      axios.get(`http://localhost:3000/graphql`, {
+        params: {
+          query: `
+            query {
+              players {
+                playerName
+                goals
+              }
+            }
+          `
+        }
+      }))
+    )
+    .map((res) => {
+        return res.data.data;
     })
     .map((res) => {
         return {
-            playerList: res.data
-        }
+            playerList: res.players
+        };
     });
 
-export const stateStream = Rx.Observable.merge(PlayerStream, PlayerListStream)
+export const stateStream = Rx.Observable.merge(PlayerListStream)
     .map((fragment) => {
         _state = Object.assign({}, _state, fragment);
         return _state;
@@ -56,4 +54,6 @@ export const stateStream = Rx.Observable.merge(PlayerStream, PlayerListStream)
 
 stateStream.connect();
 
-stateStream.subscribe((res) => console.log(res))
+stateStream.subscribe((res) => console.log(res), (err) => console.log(err))
+
+PlayerListActions.get();
