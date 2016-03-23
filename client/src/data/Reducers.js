@@ -11,6 +11,7 @@ const PlayerListStream = Dispatcher
             query {
               players {
                 playerName
+                playerId
                 goals
               }
             }

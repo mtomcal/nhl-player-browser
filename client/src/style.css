@@ -37,9 +37,29 @@ p {
   flex: 1 1 auto;
 }
 
+.mugshot {
+  float: left;
+  width: 5rem;
+  margin-right: 1.25rem;
+  border-radius: 50%;
+}
+
 .card {
   margin: 1rem;
   padding: 0.85rem;
-  min-width: 20rem;
+  min-width: 30rem;
   background-color: #f6f6f6;
+}
+
+.pagination {
+  text-align: center;
+}
+.pager {
+  margin: 1.25rem;
+  font-size: 1.5rem;
+  color: #FEFEFE;
+}
+
+.pager.active {
+  color: red;
 }
