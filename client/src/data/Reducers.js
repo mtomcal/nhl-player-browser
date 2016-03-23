@@ -1,34 +1,6 @@
 import Rx from 'rxjs';
 import axios from 'axios'
-
-// State Stack
-export const stateSubject = new Rx.Subject();
-
-export const stateStream = stateSubject
-    .startWith({
-        playerList: []
-    })
-    .scan((state, fragment) => {
-        return Object.assign({}, state, fragment);
-    }, {})
-    .publishReplay(1);
-
-stateStream.connect();
-
-stateStream.subscribe((res) => console.log(res), (err) => console.log(err));
-
-
-// Actions and Dispatcher
-
-const Dispatcher = new Rx.Subject();
-
-export const PlayerListActions = {
-    get() {
-        Dispatcher.next({type: 'GET_PLAYERLIST'});
-    }
-}
-
-// Reducer Stack
+import {Dispatcher, stateSubject} from './Subjects';
 
 const PlayerListStream = Dispatcher
     .filter((action) => action.type === 'GET_PLAYERLIST')
@@ -53,9 +25,9 @@ const PlayerListStream = Dispatcher
       return {
         playerList: res.players
       };
-    })
+    });
 
-Rx.Observable.merge(PlayerListStream)
+PlayerListStream
   .do(function (fragment) {
     stateSubject.next(fragment);
   })

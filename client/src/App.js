@@ -1,5 +1,7 @@
 import React from 'react';
-import {stateStream, PlayerListActions} from './data/stores';
+import {stateStream} from './data/State';
+import './data/Reducers';
+import {PlayerListActions} from './data/ActionCreators';
 import mapComponentToStream from './mapComponentToStream';
 
 export const App = React.createClass({
@@ -31,7 +33,6 @@ const StreamContainer = mapComponentToStream({
   Component: App,
   stream: stateStream
 });
-
 export default function (props) {
   PlayerListActions.get();
   return <StreamContainer {...props} />;
