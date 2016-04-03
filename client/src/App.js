@@ -1,13 +1,13 @@
 import React from 'react';
-import {stateStream} from './data/State';
-import './data/Reducers';
+import {Provider, connect} from 'react-redux';
+import state from './data/State';
 import {PlayerListActions} from './data/ActionCreators';
-import mapComponentToStream from './mapComponentToStream';
 import _ from 'lodash';
 
 export const App = React.createClass({
   propTypes: {
-    stream: React.PropTypes.object.isRequired
+    stream: React.PropTypes.array.isRequired,
+    isFetched: React.PropTypes.bool.isRequired
   },
   getInitialState() {
     return {
@@ -23,7 +23,7 @@ export const App = React.createClass({
   },
   renderPagination() {
     const {perPage, page} = this.state;
-    const {playerList} = this.props.stream;
+    const playerList = this.props.stream;
     const pages = _.range(1, Math.ceil(playerList.length / perPage))
     .map((index) => {
       const isActive = (index === page) ? 'active' : '';
@@ -40,7 +40,7 @@ export const App = React.createClass({
   },
   renderItems() {
     const {perPage, page} = this.state;
-    return this.props.stream.playerList
+    return this.props.stream
     .sort(function (a, b) {
       if (a.goals < b.goals) {
         return 1;
@@ -71,6 +71,9 @@ export const App = React.createClass({
     });
   },
   render() {
+    if (this.props.isFetched === false) {
+      return <div></div>;
+    }
     return (
       <div>
         {this.renderPagination()}
@@ -83,11 +86,25 @@ export const App = React.createClass({
   }
 });
 
-const StreamContainer = mapComponentToStream({
-  Component: App,
-  stream: stateStream
-});
-export default function (props) {
-  PlayerListActions.get();
-  return <StreamContainer {...props} />;
+function mapStateToProps(state) {
+  return {
+    stream: state.PlayerList.body,
+    isFetched: state.PlayerList.isFetched
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+const ConnectedApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
+
+export default function () {
+  state.dispatch(PlayerListActions.fetch());
+  return <Provider store={state}>
+    <ConnectedApp />
+  </Provider>;
 }

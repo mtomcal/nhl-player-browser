@@ -30,6 +30,9 @@
     "lodash": "^4.5.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-redux": "^4.4.1",
+    "redux": "^3.3.1",
+    "redux-thunk": "^2.0.1",
     "rimraf": "^2.4.3",
     "rxjs": "^5.0.0-beta.2",
     "style-loader": "^0.13.0",
@@ -37,5 +40,8 @@
     "webpack": "^1.12.9",
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.9.1"
+  },
+  "devDependencies": {
+    "redux-devtools": "^3.2.0"
   }
 }

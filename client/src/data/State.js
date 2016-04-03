@@ -1,15 +1,6 @@
-import Rx from 'rxjs';
-import {stateSubject} from './Subjects';
-
-export const stateStream = stateSubject
-    .startWith({
-        playerList: []
-    })
-    .scan((state, fragment) => {
-        return Object.assign({}, state, fragment);
-    }, {})
-    .publishReplay(1);
-
-stateStream.connect();
-
-stateStream.subscribe((res) => console.log(res), (err) => console.log(err));
+import thunkMiddleware from 'redux-thunk'
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from './Reducers'
+export default createStore(rootReducer, applyMiddleware(
+  thunkMiddleware
+));

@@ -1,35 +1,26 @@
-import Rx from 'rxjs';
-import axios from 'axios'
-import {Dispatcher, stateSubject} from './Subjects';
+import { combineReducers } from 'redux'
 
-const PlayerListStream = Dispatcher
-    .filter((action) => action.type === 'GET_PLAYERLIST')
-    .flatMap((action) => Rx.Observable.fromPromise(
-      axios.get(`http://localhost:3000/graphql`, {
-        params: {
-          query: `
-            query {
-              players {
-                playerName
-                playerId
-                goals
-              }
-            }
-          `
-        }
-      }))
-    )
-    .map((res) => {
-        return res.data.data;
-    })
-    .map((res) => {
-      return {
-        playerList: res.players
-      };
-    });
+function PlayerList(state = {
+  isFetched: false,
+  body: []
+}, action) {
+  switch (action.type) {
+    case 'GET_PLAYERLIST':
+      return Object.assign({}, state, {
+        isFetched: false
+      });
+    case 'RECEIVED_PLAYERLIST':
+      return Object.assign({}, state, {
+        isFetched: true,
+        body: action.payload
+      })
+    default:
+      return state;
+  }
+}
 
-PlayerListStream
-  .do(function (fragment) {
-    stateSubject.next(fragment);
-  })
-  .subscribe(null, (err) => console.log(err));
+const rootReducer = combineReducers({
+  PlayerList
+});
+
+export default rootReducer;
