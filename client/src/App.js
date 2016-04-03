@@ -70,9 +70,12 @@ export const App = React.createClass({
       );
     });
   },
+  fetchPlayers() {
+    state.dispatch(PlayerListActions.fetch());
+  },
   render() {
     if (this.props.isFetched === false) {
-      return <div></div>;
+      return <div><button onClick={this.fetchPlayers}>Fetch</button></div>;
     }
     return (
       <div>
@@ -103,7 +106,6 @@ const ConnectedApp = connect(
 )(App);
 
 export default function () {
-  state.dispatch(PlayerListActions.fetch());
   return <Provider store={state}>
     <ConnectedApp />
   </Provider>;
